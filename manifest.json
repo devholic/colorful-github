@@ -5,6 +5,9 @@
     "version": "0.1",
     "description": "GitHub contributions grid color changer for chrome",
     "homepage_url": "https://github.com/devholic/colorful-github",
+    "icons": {
+        "128": "icon_128.png"
+    },
     "content_scripts": [{
         "matches": ["https://github.com/*"],
         "js": ["colorful-github.js"]
