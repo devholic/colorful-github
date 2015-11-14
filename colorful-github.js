@@ -1,4 +1,4 @@
-if (document.getElementsByClassName('legend') !== null) {
+if (document.getElementsByClassName('legend').length != 0) {
     var change_colors = ['#eeeeee', '#ffebee', '#ffcdd2', '#ef9a9a', '#e57373'];
     var colors = {};
     var doc = document.getElementsByClassName('legend')[0].getElementsByTagName('li');
@@ -20,7 +20,6 @@ if (document.getElementsByClassName('legend') !== null) {
         }
     }
     var cube = document.getElementsByTagName('rect');
-    console.log(JSON.stringify(colors));
     for (var i = 0; i < cube.length; i++) {
         var before = cube[i].getAttribute("fill");
         cube[i].setAttribute("fill", colors[before]);
