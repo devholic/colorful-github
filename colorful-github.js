@@ -1,35 +1,44 @@
 function updateColor() {
     if (document.getElementsByClassName('legend').length != 0) {
-        var change_colors = ['#eeeeee', '#ffebee', '#ffcdd2', '#ef9a9a', '#e57373'];
-        var colors = {};
-        var doc = document.getElementsByClassName('legend')[0].getElementsByTagName('li');
-        for (var i = 0; i < doc.length; i++) {
-            var raw = doc[i].getAttribute('style');
-            var data = raw.split(';');
-            for (var j = 0; j < data.length; i++) {
-                var tag = data[j].split(':');
-                if (tag[0] == 'background-color') {
-                    var color = tag[1].replace(' ', '').replace('#', '');
-                    if (color.length == 3) {
-                        color = color[0] + color[0] + color[1] + color[1] + color[2] + color[2];
-                    }
-                    color = '#' + color;
-                    doc[i].setAttribute('style', 'background-color: ' + change_colors[i]);
-                    colors[color] = change_colors[i];
-                    break;
+        const colorList = ['#eeeeee', '#ffebee', '#ffcdd2', '#ef9a9a', '#e57373'];
+        const colors = {};
+
+        [].forEach
+            .call(
+                document.getElementsByClassName('legend')[0]
+                .getElementsByTagName('li'),
+                (elem, idx) => {
+                    elem.getAttribute('style')
+                        .split(';')
+                        .some((styleData) => {
+                            const tag = styleData.split(':');
+                            if (tag[0] == 'background-color') {
+                                var color = tag[1].replace(/#|\s/gi, '');
+                                if (color.length == 3) {
+                                    color = color
+                                        .split('')
+                                        .reduce((acc, r) => acc.concat(r * 2), "");
+                                }
+                                colors['#'.concat(color)] = colorList[idx];
+                                elem.setAttribute('style', 'background-color: ' + colorList[idx]);
+                                return true;
+                            }
+                        });
                 }
-            }
-        }
-        var cube = document.getElementsByTagName('rect');
-        for (var i = 0; i < cube.length; i++) {
-            var before = cube[i].getAttribute("fill");
-            cube[i].setAttribute("fill", colors[before]);
-        }
+            );
+
+        [].forEach
+            .call(
+                document
+                .getElementsByTagName('rect'),
+                (cube) => {
+                    const prevColor = cube.getAttribute('fill');
+                    cube.setAttribute('fill', colors[prevColor] || prevColor);
+                }
+            )
     }
 }
 
 updateColor();
 
-document.addEventListener("DOMSubtreeModified", function() {
-    updateColor();
-}, false);
+document.addEventListener("DOMSubtreeModified", () => updateColor(), false);
